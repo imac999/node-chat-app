@@ -1,4 +1,4 @@
-const {generateMessage, generateLoc}=require('./utils/Message');
+const {generateMessage, generateLoc}=require('./utils/message');
 //require('./config/config');
 const http=require('http');
 const socketIO=require('socket.io');
