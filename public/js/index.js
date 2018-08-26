@@ -21,6 +21,7 @@ socket.on('newLoc', function(loc) {
   a.append(`latitude: ${loc.lat}, longitude: ${loc.lng}`);
   a.attr('href',`https://www.google.com/maps?q=${loc.lat},${loc.lng}`);
   a.attr('target','_blank');
+  li.append(`${loc.from}: `);
   li.append(a);
   $('#messages').append(li);
 });
@@ -45,6 +46,7 @@ $(function() {
     navigator.geolocation.getCurrentPosition(function(pos){
       console.log(pos);
       socket.emit('createLoc', {
+        from: 'dave',
         lat: pos.coords.latitude,
         lng: pos.coords.longitude
       }, (data) => {

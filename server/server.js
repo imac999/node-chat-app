@@ -37,7 +37,7 @@ io.on('connection', (socket) => {
 
   socket.on('createLoc', (coords, callback) => {
     console.log('createLoc', coords );
-    io.emit('newLoc', generateLoc('Admin', coords.lat, coords.lng));
+    io.emit('newLoc', generateLoc(coords.from, coords.lat, coords.lng));
     callback('from server');
   });
 
