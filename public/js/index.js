@@ -28,32 +28,36 @@ socket.on('newLoc', function(loc) {
 
 
 $(function() {
+  var messageTextbox=$('[name=message]');
   $('#message-form').on('submit', function(e) {
     e.preventDefault();
     socket.emit('createMsg', {
       from: 'Iain',
-      text: $('[name=message]').val()
-    }, (data) => {
-      console.log(data);
+      text: messageTextbox.val()
+    }, () => {
+      messageTextbox.val('');
     });
   });
 
   var locationButton=$('#send-location');
   locationButton.on('click', function(e) {
     if(!navigator.geolocation){
-      return alert('Not SUpported By Your Browser');
+      return alert('Not Supported By Your Browser');
     }
+    locationButton.attr('disabled', 'disabled')
+                  .text('Sending Location...');
     navigator.geolocation.getCurrentPosition(function(pos){
-      console.log(pos);
       socket.emit('createLoc', {
         from: 'dave',
         lat: pos.coords.latitude,
         lng: pos.coords.longitude
-      }, (data) => {
-          console.log(data);
+      }, () => {
+        locationButton.removeAttr('disabled').text('Send Location');
       });
     }, function(){
-        return alert('Unable');
+        locationButton.removeAttr('disabled')
+                        .text('Send Location');
+        return alert('Unable to get Location');
     });
   });
 })
