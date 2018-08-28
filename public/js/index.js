@@ -9,21 +9,27 @@ socket.on('disconnect', function() {
 });
 
 socket.on('newMsg', function(msg) {
-  console.log('newMsg: ', msg);
-  var li=$('<li></li>');
-  li.text(`${msg.from}: ${msg.text}`);
-  $('#messages').append(li);
+  var formattedTime=moment(msg.createdAt).format('h:mma');
+  var template = $('#message-template').html();
+  var html = Mustache.render(template, {
+    from: msg.from,
+    text: msg.text,
+    createdAt: formattedTime
+  });
+  $('#messages').append(html);
 });
+
 socket.on('newLoc', function(loc) {
-  console.log('newLoc: ', loc);
-  var li=$('<li></li>');
-  var a=$('<a></a>');
-  a.append(`latitude: ${loc.lat}, longitude: ${loc.lng}`);
-  a.attr('href',`https://www.google.com/maps?q=${loc.lat},${loc.lng}`);
-  a.attr('target','_blank');
-  li.append(`${loc.from}: `);
-  li.append(a);
-  $('#messages').append(li);
+  var formattedTime=moment(loc.createdAt).format('h:mma');
+  var template = $('#loc-template').html();
+  var html = Mustache.render(template, {
+    from: loc.from,
+    lat: loc.lat,
+    lng: loc.lng,
+    url: loc.url,
+    createdAt: formattedTime
+  });
+  $('#messages').append(html);
 });
 
 
